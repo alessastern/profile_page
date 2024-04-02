@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
 import "../styles.css";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { saveLogin } from "../store/loginSlice";
 
 function LoginPage() {
-  const [login, setLogin] = useState("");
+  const login = useSelector((state) => state.login.login);
   const [password, setPassword] = useState("");
   const [isDisabled, setDisabled] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const setLogin = (e) => {
+    dispatch(saveLogin(e));
+  };
 
   const checkValidity = (login, password) => {
     return login === "developer21" && password === "123456"
@@ -25,7 +34,9 @@ function LoginPage() {
             className="input"
             placeholder="login"
             type="text"
-            onChange={(e) => setLogin(e.target.value)}
+            onChange={(e) => {
+              setLogin(e.target.value);
+            }}
           />
         </div>
         <div className="formfield">
@@ -38,7 +49,14 @@ function LoginPage() {
         </div>
       </form>
       <div className="formfield">
-        <button className="button" form="login" disabled={isDisabled}>
+        <button
+          className="button"
+          form="login"
+          disabled={isDisabled}
+          onClick={() => {
+            navigate("/profile");
+          }}
+        >
           go!
         </button>
       </div>
